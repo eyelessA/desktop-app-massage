@@ -22,6 +22,7 @@ import {
     XMarkIcon,
 } from '@heroicons/vue/24/outline'
 import {ChevronDownIcon, PhoneIcon, PlayCircleIcon} from '@heroicons/vue/20/solid'
+import Footer from "@/Layouts/Footer.vue";
 
 defineProps<{
     canLogin?: boolean;
@@ -271,4 +272,5 @@ function handleImageError() {
             </div>
         </div>
     </section>
+    <Footer></Footer>
 </template>
