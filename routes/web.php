@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\TherapistController;
-use App\Models\Therapist;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -38,3 +38,4 @@ Route::get('/our-therapists', function () {
 })->name('our-therapists');
 
 Route::get('/therapists/{id}', [TherapistController::class, 'show'])->name('therapists.show');
+Route::post('/reservations', [ReservationController::class, 'store'])->middleware('auth:sanctum');

@@ -2,31 +2,49 @@
 import {defineProps} from 'vue';
 import Header from "@/Components/Header.vue";
 import Footer from "@/Layouts/Footer.vue";
+import {useForm} from "@inertiajs/vue3";
 
 const props = defineProps({
     therapist: {
         type: Object as () => {
-            name: string,
-            surname: string,
-            description: string,
-            image: string,
-            rating: number
+            id: number;
+            name: string;
+            surname: string;
+            description: string;
+            image: string;
+            rating: number;
         } | undefined,
-        required: false
-    }
+        required: false,
+    },
 });
 
-// Получаем текущую дату
+const form = useForm({
+    therapist_id: props.therapist?.id || null,
+    duration: "",
+    massage_type: "",
+    date: "",
+    time: "",
+});
+
+const submitForm = () => {
+    form.post("/reservations", {
+        onSuccess: () => {
+            alert("Запись успешно создана!");
+        },
+        onError: (errors) => {
+            console.error("Ошибка при записи:", errors);
+        },
+    });
+};
+
 const today = new Date();
-const minDate = today.toISOString().split('T')[0]; // Сегодняшняя дата в формате YYYY-MM-DD
+const minDate = today.toISOString().split('T')[0];
 
-// Для максимальной даты — устанавливаем ее на последний день следующего месяца
 const nextMonth = new Date();
-nextMonth.setMonth(today.getMonth() + 1); // Переходим к следующему месяцу
-nextMonth.setMonth(nextMonth.getMonth() + 1); // Переходим еще на один месяц вперед
-nextMonth.setDate(0); // Устанавливаем последний день следующего месяца
+nextMonth.setMonth(today.getMonth() + 1);
+nextMonth.setMonth(nextMonth.getMonth() + 1);
+nextMonth.setDate(0);
 const maxDate = nextMonth.toISOString().split('T')[0];
-
 </script>
 
 <template>
@@ -58,55 +76,42 @@ const maxDate = nextMonth.toISOString().split('T')[0];
             </div>
         </div>
 
-        <!-- Блок с формой сдвинут вправо -->
         <div class="flex justify-center p-12">
             <div class="mx-auto w-full max-w-[550px] bg-white">
-                <form>
+                <form @submit.prevent="submitForm">
                     <div class="mb-5">
-                        <label for="name" class="mb-3 block text-base font-medium text-[#07074D]">
-                            Full Name
+                        <label for="duration" class="mb-3 block text-base font-medium text-[#07074D]">
+                            Длительность (минуты)
                         </label>
-                        <input type="text" name="name" id="name" placeholder="Full Name"
-                               class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
+                        <input type="number" name="duration" id="duration" v-model="form.duration"
+                               placeholder="Введите длительность"
+                               class="w-full rounded-md border border-[#e0e0e0] py-3 px-6"/>
                     </div>
                     <div class="mb-5">
-                        <label for="phone" class="mb-3 block text-base font-medium text-[#07074D]">
-                            Phone Number
+                        <label for="massage_type" class="mb-3 block text-base font-medium text-[#07074D]">
+                            Тип массажа
                         </label>
-                        <input type="text" name="phone" id="phone" placeholder="Enter your phone number"
-                               class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
+                        <select id="massage_type" v-model="form.massage_type"
+                                class="w-full rounded-md border border-[#e0e0e0] py-3 px-6">
+                            <option value="relax">Расслабляющий</option>
+                            <option value="sport">Спортивный</option>
+                            <option value="medical">Лечебный</option>
+                        </select>
                     </div>
                     <div class="mb-5">
-                        <label for="email" class="mb-3 block text-base font-medium text-[#07074D]">
-                            Email Address
-                        </label>
-                        <input type="email" name="email" id="email" placeholder="Enter your email"
-                               class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
+                        <label for="date" class="mb-3 block text-base font-medium text-[#07074D]">Дата</label>
+                        <input type="date" name="date" id="date"
+                               class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                               :min="minDate" :max="maxDate"/>
                     </div>
-                    <div class="-mx-3 flex flex-wrap">
-                        <div class="w-full px-3 sm:w-1/2">
-                            <div class="mb-5">
-                                <label for="date" class="mb-3 block text-base font-medium text-[#07074D]">
-                                    Date
-                                </label>
-                                <input type="date" name="date" id="date"
-                                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                                       :min="minDate" :max="maxDate"/>
-                            </div>
-                        </div>
-                        <div class="w-full px-3 sm:w-1/2">
-                            <div class="mb-5">
-                                <label for="time" class="mb-3 block text-base font-medium text-[#07074D]">
-                                    Time
-                                </label>
-                                <input type="time" name="time" id="time"
-                                       class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
-                            </div>
-                        </div>
+                    <div class="mb-5">
+                        <label for="time" class="mb-3 block text-base font-medium text-[#07074D]">Время</label>
+                        <input type="time" name="time" id="time" v-model="form.time"
+                               class="w-full rounded-md border border-[#e0e0e0] py-3 px-6"/>
                     </div>
                     <div>
-                        <button
-                            class="hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">
+                        <button type="submit"
+                                class="hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-white">
                             Записаться
                         </button>
                     </div>

@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reservation extends Model
 {
-    protected $fillable = ['user_id', 'therapist_id', 'duration'];
+    protected $fillable = ['user_id', 'therapist_id', 'duration', 'massage_type'];
 }
