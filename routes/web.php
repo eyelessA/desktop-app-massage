@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-Route::get('/our-therapists', function () {
+Route::get('/therapists', function () {
     return Inertia::render('OurTherapists', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
