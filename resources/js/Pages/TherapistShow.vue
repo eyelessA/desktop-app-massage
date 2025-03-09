@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {defineProps} from 'vue';
+import {defineProps, ref, computed} from 'vue';
 import Header from "@/Components/Header.vue";
 import Footer from "@/Layouts/Footer.vue";
 import {useForm} from "@inertiajs/vue3";
@@ -30,10 +30,10 @@ const submitForm = () => {
     form.post("/reservations", {
         onSuccess: () => {
             alert("Запись успешно создана!");
-            form.duration = ''
-            form.massage_type = ''
-            form.date = ''
-            form.time = ''
+            form.duration = '';
+            form.massage_type = '';
+            form.date = '';
+            form.time = '';
         },
         onError: (errors) => {
             console.error("Ошибка при записи:", errors);
@@ -46,9 +46,23 @@ const minDate = today.toISOString().split('T')[0];
 
 const nextMonth = new Date();
 nextMonth.setMonth(today.getMonth() + 1);
-nextMonth.setMonth(nextMonth.getMonth() + 1);
 nextMonth.setDate(0);
 const maxDate = nextMonth.toISOString().split('T')[0];
+
+const isWeekend = ref(false);
+
+const validateDate = () => {
+    if (form.date) {
+        const selectedDate = new Date(form.date);
+        const day = selectedDate.getDay();
+        if (day === 6 || day === 0) {
+            isWeekend.value = true;
+            form.date = '';
+        } else {
+            isWeekend.value = false;
+        }
+    }
+};
 </script>
 
 <template>
@@ -100,16 +114,19 @@ const maxDate = nextMonth.toISOString().split('T')[0];
                         </label>
                         <select id="massage_type" v-model="form.massage_type"
                                 class="w-full rounded-md border border-[#e0e0e0] py-3 px-6">
-                            <option value="relax">Расслабляющий</option>
-                            <option value="sport">Спортивный</option>
-                            <option value="medical">Лечебный</option>
+                            <option value="Расслабляющий">Расслабляющий</option>
+                            <option value="Спортивный">Спортивный</option>
+                            <option value="Лечебный">Лечебный</option>
                         </select>
                     </div>
                     <div class="mb-5">
                         <label for="date" class="mb-3 block text-base font-medium text-[#07074D]">Дата</label>
-                        <input type="date" name="date" id="date"
+                        <input type="date" name="date" id="date" v-model="form.date" @input="validateDate"
                                class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                               :min="minDate" :max="maxDate"/>
+                               :min="minDate"/>
+
+                        <p v-if="isWeekend" class="mt-2 text-red-500 text-sm">Выбранная дата выпадает на выходной.
+                            Пожалуйста, выберите другой день.</p>
                     </div>
                     <div class="mb-5">
                         <label for="time" class="mb-3 block text-base font-medium text-[#07074D]">Время</label>

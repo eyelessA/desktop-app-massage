@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->foreign('therapist_id')->references('id')->on('therapists');
             $table->integer('duration');
             $table->string('massage_type');
+            $table->string('time');
             $table->timestamps();
         });
     }

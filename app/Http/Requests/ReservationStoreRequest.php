@@ -25,7 +25,7 @@ class ReservationStoreRequest extends FormRequest
         return [
             'therapist_id' => 'required|exists:therapists,id',
             'duration' => 'required|integer|min:30',
-            'massage_type' => 'required|string|in:relax,sport,medical',
+            'massage_type' => 'required|string',
             'time' => 'required|string',
         ];
     }

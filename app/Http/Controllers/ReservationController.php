@@ -16,6 +16,7 @@ class ReservationController extends Controller
             'therapist_id' => $data['therapist_id'],
             'duration' => $data['duration'],
             'massage_type' => $data['massage_type'],
+            'time' => $data['time'],
         ]);
     }
 }
