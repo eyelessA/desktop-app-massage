@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {defineProps, ref, computed} from 'vue';
+import {defineProps, ref} from 'vue';
 import Header from "@/Components/Header.vue";
 import Footer from "@/Layouts/Footer.vue";
 import {useForm} from "@inertiajs/vue3";
@@ -44,9 +44,11 @@ const submitForm = () => {
 const today = new Date();
 const minDate = today.toISOString().split('T')[0];
 
-const nextMonth = new Date();
-nextMonth.setMonth(today.getMonth() + 1);
-nextMonth.setDate(0);
+const nextMonth = new Date(today);
+nextMonth.setMonth(nextMonth.getMonth() + 2);
+nextMonth.setDate(1);
+nextMonth.setDate(nextMonth.getDate() - 1);
+
 const maxDate = nextMonth.toISOString().split('T')[0];
 
 const isWeekend = ref(false);
@@ -123,7 +125,7 @@ const validateDate = () => {
                         <label for="date" class="mb-3 block text-base font-medium text-[#07074D]">Дата</label>
                         <input type="date" name="date" id="date" v-model="form.date" @input="validateDate"
                                class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                               :min="minDate"/>
+                               :min="minDate" :max="maxDate"/>
 
                         <p v-if="isWeekend" class="mt-2 text-red-500 text-sm">Выбранная дата выпадает на выходной.
                             Пожалуйста, выберите другой день.</p>
@@ -147,4 +149,5 @@ const validateDate = () => {
 </template>
 
 <style scoped>
+
 </style>
