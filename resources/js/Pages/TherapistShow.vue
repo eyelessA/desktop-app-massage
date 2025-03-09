@@ -30,6 +30,10 @@ const submitForm = () => {
     form.post("/reservations", {
         onSuccess: () => {
             alert("Запись успешно создана!");
+            form.duration = ''
+            form.massage_type = ''
+            form.date = ''
+            form.time = ''
         },
         onError: (errors) => {
             console.error("Ошибка при записи:", errors);
@@ -83,9 +87,12 @@ const maxDate = nextMonth.toISOString().split('T')[0];
                         <label for="duration" class="mb-3 block text-base font-medium text-[#07074D]">
                             Длительность (минуты)
                         </label>
-                        <input type="number" name="duration" id="duration" v-model="form.duration"
-                               placeholder="Введите длительность"
-                               class="w-full rounded-md border border-[#e0e0e0] py-3 px-6"/>
+                        <select id="duration" v-model="form.duration"
+                                class="w-full rounded-md border border-[#e0e0e0] py-3 px-6">
+                            <option value="45">45 минут</option>
+                            <option value="60">60 минут</option>
+                            <option value="90">90 минут</option>
+                        </select>
                     </div>
                     <div class="mb-5">
                         <label for="massage_type" class="mb-3 block text-base font-medium text-[#07074D]">
