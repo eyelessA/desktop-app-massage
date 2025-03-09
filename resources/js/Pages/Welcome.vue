@@ -23,6 +23,7 @@ import {
 } from '@heroicons/vue/24/outline'
 import {ChevronDownIcon, PhoneIcon, PlayCircleIcon} from '@heroicons/vue/20/solid'
 import Footer from "@/Layouts/Footer.vue";
+import {Link} from "@inertiajs/vue3";
 
 defineProps<{
     canLogin?: boolean;
@@ -131,14 +132,32 @@ function handleImageError() {
                 <a href="#" class="text-sm/6 font-semibold text-gray-900">Marketplace</a>
                 <a href="#" class="text-sm/6 font-semibold text-gray-900">Company</a>
             </PopoverGroup>
-            <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-                <a v-if="canLogin" :href="route('login')" class="text-sm/6 font-semibold text-gray-900 mr-3">
-                    Log in <span aria-hidden="true"></span>
-                </a>
-                <a v-if="canRegister" :href="route('register')" class="text-sm/6 font-semibold text-gray-900">
-                    Register
-                </a>
-            </div>
+            <nav v-if="canLogin" class="-mx-3 flex flex-1 justify-end">
+                <Link
+                    v-if="$page.props.auth.user"
+                    :href="route('dashboard')"
+                    class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                >
+                    Dashboard
+                </Link>
+
+                <template v-else>
+                    <Link
+                        :href="route('login')"
+                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                    >
+                        Log in
+                    </Link>
+
+                    <Link
+                        v-if="canRegister"
+                        :href="route('register')"
+                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                    >
+                        Register
+                    </Link>
+                </template>
+            </nav>
         </nav>
         <Dialog class="lg:hidden" @close="mobileMenuOpen = false" :open="mobileMenuOpen">
             <div class="fixed inset-0 z-10"/>
@@ -263,7 +282,7 @@ function handleImageError() {
                                 }}</span>
                         </div>
                         <div class="mt-4">
-                            <a href="#"
+                            <a href="#"x
                                class="inline-flex items-center font-semibold text-blue-600 hover:text-neutral-600"
                                title="read more">Записаться</a>
                         </div>
