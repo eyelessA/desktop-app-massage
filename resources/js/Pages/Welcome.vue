@@ -49,7 +49,7 @@ const therapists = ref(null);
 
 onMounted(async () => {
     try {
-        const response = await axios.get(route('therapists.index'));
+        const response = await axios.get(route('best-therapists'));
         therapists.value = response.data;
     } catch (error) {
         console.error('Ошибка загрузки терапевтов:', error);
@@ -127,7 +127,7 @@ function handleImageError() {
                     </transition>
                 </Popover>
 
-                <a href="#" class="text-sm/6 font-semibold text-gray-900">Features</a>
+                <a :href="route('our-therapists')" class="text-sm/6 font-semibold text-gray-900">Наши массажисты</a>
                 <a href="#" class="text-sm/6 font-semibold text-gray-900">Marketplace</a>
                 <a href="#" class="text-sm/6 font-semibold text-gray-900">Company</a>
             </PopoverGroup>
