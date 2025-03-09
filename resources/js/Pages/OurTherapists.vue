@@ -1,11 +1,22 @@
 <script setup lang="ts">
-
-import {onMounted, ref} from "vue";
+import { onMounted, ref } from "vue";
 import axios from "axios";
 import Header from "@/Components/Header.vue";
 import Footer from "@/Layouts/Footer.vue";
 
-const therapists = ref(null);
+// Define the interface for therapist data
+interface Therapist {
+    id: number;
+    name: string;
+    surname: string;
+    description: string;
+    rating: number;
+    schedule: string;
+    image: string;
+}
+
+// Define therapists as an array of Therapist objects
+const therapists = ref<Therapist[] | null>(null);
 
 onMounted(async () => {
     try {
@@ -20,7 +31,7 @@ onMounted(async () => {
 <template>
     <Header></Header>
     <ul class="grid grid-cols-1 xl:grid-cols-3 gap-y-10 gap-x-6 items-start p-8">
-        <div v-for="therapist in therapists">
+        <div v-for="therapist in therapists" :key="therapist.id">
             <li class="relative flex flex-col sm:flex-row xl:flex-col items-start">
                 <div class="order-1 sm:ml-6 xl:ml-0">
                     <h3 class="mb-1 text-slate-900 font-semibold">
@@ -54,7 +65,7 @@ onMounted(async () => {
                         <span class="text-neutral-600 font-medium">{{ therapist.schedule }}</span>
                     </div>
                     <a class="group inline-flex items-center h-9 rounded-full text-sm font-semibold whitespace-nowrap px-3 focus:outline-none focus:ring-2 bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900 focus:ring-slate-500 mt-6"
-                       href="">
+                       :href="route('therapists.show', therapist.id)">
                         Записаться
                         <span class="sr-only">, Completely unstyled, fully accessible UI components</span>
                         <svg class="overflow-visible ml-3 text-slate-300 group-hover:text-slate-400"
@@ -69,7 +80,8 @@ onMounted(async () => {
                      width="1216" height="640">
             </li>
         </div>
-    </ul>    <Footer></Footer>
+    </ul>
+    <Footer></Footer>
 </template>
 
 <style scoped>

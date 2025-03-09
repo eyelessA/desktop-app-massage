@@ -138,7 +138,7 @@ function handleImageError() {
                     :href="route('dashboard')"
                     class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                 >
-                    Dashboard
+                    Профиль
                 </Link>
 
                 <template v-else>
@@ -220,7 +220,7 @@ function handleImageError() {
             <div class="image object-center text-center">
                 <img
                     src="https://avatars.mds.yandex.net/get-altay/10637174/2a0000018acd71feed66bef3a8707b50aada/XXL_height"
-                    class="rounded-lg">
+                    class="rounded-lg" alt="">
             </div>
         </div>
         <div class="sm:w-1/2 p-5">
@@ -254,7 +254,8 @@ function handleImageError() {
         <div class="relative items-center w-full px-5 py-12 mx-auto md:px-12 lg:px-24 max-w-7xl">
             <h1 class="text-center text-neutral-700 lg:text-5xl">Наши лучшие работники</h1>
             <div class="grid w-full grid-cols-1 gap-6 mx-auto lg:grid-cols-3">
-                <div v-for="therapist in therapists?.data" :key="therapist.id">
+                <div v-for="therapist in therapists?.
+                data" :key="therapist.id">
                     <div class="p-6 flex flex-col h-full">
                         <img class="object-cover object-center w-full mb-8 lg:h-64 md:h-36 rounded-xl"
                              :src="therapist.image" alt="blog">
@@ -282,7 +283,7 @@ function handleImageError() {
                                 }}</span>
                         </div>
                         <div class="mt-4">
-                            <a href="#"x
+                            <a :href="route('therapists.show', therapist.id)"
                                class="inline-flex items-center font-semibold text-blue-600 hover:text-neutral-600"
                                title="read more">Записаться</a>
                         </div>

@@ -10,7 +10,8 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/best-therapists', [TherapistController::class, 'bestTherapists'])->name('best-therapists');
-Route::get('/', [TherapistController::class, 'index'])->name('therapists.index');
+Route::get('/therapists', [TherapistController::class, 'index'])->name('therapists.index');
+
 
 Route::prefix('users')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('users.index');
